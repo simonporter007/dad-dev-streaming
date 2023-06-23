@@ -1,0 +1,21 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700" rel="stylesheet">
+<div class="remove-me w-[300px] bg-slate-400 h-screen">
+  <div class="main-container">
+    <div class="grid gap-8 px-6 py-3 ">
+      <time class="text-white text-center text-8xl font-light font-sans">
+        <span class="hour">00</span><span style="color: {{color}}" class="blink opacity-70 text-black">:</span><span
+          class="minute">00</span>
+      </time>
+      <div class="flex gap-4 opacity-90">
+        <div class="date opacity-100 text-6xl"></div>
+        <div class="grid my-auto justify-around font-bold text-2xl">
+          <div style="color: {{color}}" class="month uppercase text-black leading-none"></div>
+          <div class="day uppercase leading-none"></div>
+        </div>
+      </div>
+    </div>
+    <hr
+      class="mx-6 mt-6 border-t-4 border-solid border-white rounded-3xl before:rounded-3xl h-7 before:h-7 overflow-visible before:block before:-mt-7 before:border-0 before:border-b-4" />
+  </div>
+</div>
+<script type="module" src="/src/main.ts"></script>
