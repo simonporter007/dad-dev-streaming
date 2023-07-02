@@ -9,6 +9,7 @@
   "scripts": {
     "start": "turbo run start",
     "start:spotify": "concurrently \"pnpm run --filter dad-bot start\" \"pnpm run --filter spotify start\"",
+    "start:overlay": "concurrently \"pnpm run --filter dad-bot start\" \"pnpm run --filter overlay start\"",
     "build": "turbo run build",
     "lint": "turbo run lint"
   },
@@ -16,6 +17,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "autoprefixer": "^10.4.14",
+    "concurrently": "^8.2.0",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",

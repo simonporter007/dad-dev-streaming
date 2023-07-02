@@ -13,32 +13,30 @@ export function SpotifyCurrentlyPlaying() {
   }
 
   return tokenQuery?.data?.accessToken ? (
-    <div className='grid justify-end py-4 px-2'>
-      <div
-        className={`h-full grid grid-cols-[repeat(2,_minmax(0,_max-content))_1fr] gap-4 bg-gradient p-4 rounded-lg min-w-[250px] transition-opacity ease-in-out duration-1000 ${
-          currentlyPlayingQuery?.data?.is_playing ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <img
-          className='h-14 w-14 rounded-lg m-auto'
-          src={currentlyPlayingQuery?.data?.item?.album?.images?.[0]?.url}
-        />
-        <div className='m-auto'>
-          <div className='grid'>
-            <span className='text-lg text-white'>
-              {currentlyPlayingQuery?.data?.item?.name}
-            </span>
-            <span className='text-sm text-gray-300'>
-              {currentlyPlayingQuery?.data?.item?.artists[0].name}
-              {currentlyPlayingQuery?.data?.item?.album?.name
-                ? ` · ${currentlyPlayingQuery?.data?.item?.album?.name}`
-                : ''}
-            </span>
-          </div>
+    <div
+      className={`grid grid-cols-[repeat(2,_minmax(0,_max-content))_1fr] gap-4 bg-gradient p-4 rounded-lg min-w-[250px] transition-opacity ease-in-out duration-1000 ${
+        currentlyPlayingQuery?.data?.is_playing ? 'opacity-100' : 'opacity-0'
+      }`}
+    >
+      <img
+        className='h-14 w-14 rounded-lg m-auto'
+        src={currentlyPlayingQuery?.data?.item?.album?.images?.[0]?.url}
+      />
+      <div className='m-auto'>
+        <div className='grid'>
+          <span className='text-lg text-white'>
+            {currentlyPlayingQuery?.data?.item?.name}
+          </span>
+          <span className='text-sm text-gray-300'>
+            {currentlyPlayingQuery?.data?.item?.artists[0].name}
+            {currentlyPlayingQuery?.data?.item?.album?.name
+              ? ` · ${currentlyPlayingQuery?.data?.item?.album?.name}`
+              : ''}
+          </span>
         </div>
-        <div className='self-start h-full pl-4 -translate-y-2 translate-x-2'>
-          <img src={SpotifyLogo} alt='Spotify Logo' className='h-5 w-5' />
-        </div>
+      </div>
+      <div className='self-start h-full pl-4 -translate-y-2 translate-x-2'>
+        <img src={SpotifyLogo} alt='Spotify Logo' className='h-5 w-5' />
       </div>
     </div>
   ) : (

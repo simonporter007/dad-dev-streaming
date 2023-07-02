@@ -1,0 +1,39 @@
+{
+  "name": "@dad-dev/overlay",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "pnpm vite dev --host",
+    "serve": "pnpm run preview",
+    "build": "vite build",
+    "build:types": "tsc",
+    "format": "prettier --write .",
+    "lint": "eslint src --ext js,ts,tsx"
+  },
+  "proxy": "http://192.168.0.159:5000",
+  "dependencies": {
+    "@dad-dev/pomodoro": "workspace:*",
+    "@dad-dev/spotify": "workspace:*",
+    "@tanstack/react-query": "^4.29.19",
+    "autoprefixer": "^10.4.14",
+    "axios": "^1.4.0",
+    "postcss": "^8.4.24",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9"
+  }
+}
