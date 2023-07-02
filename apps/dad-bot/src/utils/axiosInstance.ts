@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const axiosClient = axios.create();
 const tokens = {
-  accessToken: '',
+  spotifyAccessToken: '',
   twitchAccessToken: '',
 };
 
@@ -18,7 +18,7 @@ axiosClient.interceptors.response.use(
       res.config.url === 'https://accounts.spotify.com/api/token' &&
       res.data.access_token
     ) {
-      tokens.accessToken = res.data.access_token;
+      tokens.spotifyAccessToken = res.data.access_token;
     }
     if (
       res.config.url === 'https://id.twitch.tv/oauth2/token' &&
@@ -44,10 +44,10 @@ axiosClient.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const resp = await axiosClient.post('/auth/spotify/refresh');
-          tokens.accessToken = resp?.data?.accessToken;
+          tokens.spotifyAccessToken = resp?.data?.accessToken;
           return axiosClient(originalConfig);
         } catch (_error) {
-          tokens.accessToken = '';
+          tokens.spotifyAccessToken = '';
           return Promise.reject(_error);
         }
       }

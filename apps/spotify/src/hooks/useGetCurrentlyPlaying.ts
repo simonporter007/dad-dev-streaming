@@ -14,7 +14,7 @@ export function useGetCurrentlyPlaying() {
       );
       return res.data;
     },
-    enabled: Boolean(tokensQuery.data?.accessToken),
+    enabled: Boolean(tokensQuery.data?.spotifyAccessToken),
     refetchInterval: 5000,
   });
 }

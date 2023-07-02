@@ -12,7 +12,7 @@ export function SpotifyCurrentlyPlaying() {
     return null;
   }
 
-  return tokenQuery?.data?.accessToken ? (
+  return tokenQuery?.data?.spotifyAccessToken ? (
     <div
       className={`grid grid-cols-[repeat(2,_minmax(0,_max-content))_1fr] gap-4 bg-gradient p-4 rounded-lg min-w-[250px] transition-opacity ease-in-out duration-1000 ${
         currentlyPlayingQuery?.data?.is_playing ? 'opacity-100' : 'opacity-0'
