@@ -95,9 +95,7 @@ app.get('/auth/spotify/refresh', async (req, res) => {
 
   if (resp.status === 200) {
     tokens.spotifyAccessToken = resp.data.access_token;
-    res.send({
-      access_token: resp.data.access_token,
-    });
+    res.redirect('/');
   }
 });
 
@@ -181,7 +179,7 @@ app.get('/auth/twitch/connect', async (req, res) => {
       twitchAccessToken: tokens.twitchAccessToken,
     });
     console.log({ status });
-    res.sendStatus(200);
+    res.redirect('/');
   } catch (err) {
     res.sendStatus(500);
   }
