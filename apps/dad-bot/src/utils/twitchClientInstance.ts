@@ -88,6 +88,8 @@ async function onMessageHandler(
           channel,
           `⏰ [@${tags.username}]: !pomo lets you create your own pomodoro timer. Commands are "start", "clear", "pause", and "resume".`
         );
+      } else if (subCommand === 'help') {
+        /* !pomo help */
         await client.say(
           channel,
           `⏰ [@${tags.username}]: For example, !pomo start 25 5 will create a 25 minute timer with a 5 minute break. !pomo start 50 10 3 will create a 50/10 timer and will run for 3 rounds.`
