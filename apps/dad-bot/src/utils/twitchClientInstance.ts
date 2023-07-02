@@ -42,6 +42,12 @@ async function setupTimers() {
       `🤖 : Lurkers are always welcome too 👀, let us know with a !lurk`
     );
   }, 95 * MINUTE);
+  messageTimers['hydrate'] = setInterval(async () => {
+    await client.say(
+      channelName,
+      `🤖 : Don't forget to hydrate! 💧 Keep that brain topped up to its full potential.`
+    );
+  }, 60 * MINUTE);
 }
 
 async function onMessageHandler(
@@ -57,7 +63,7 @@ async function onMessageHandler(
     const command = args?.shift()?.toLowerCase();
     const subCommand = args?.shift()?.toLowerCase();
     const username = tags?.username;
-    console.log({ args, command, subCommand, self, tags });
+    //console.log({ args, command, subCommand, self, tags });
 
     if (command === 'commands' || command === 'help') {
       /* !commands or !help */
