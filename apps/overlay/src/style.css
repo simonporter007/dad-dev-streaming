@@ -1,10 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300,400;700&display=swap');
-@import url(//db.onlinewebfonts.com/c/6f0cd4643b13ab5889b7d772ca093555?family=Portico+Outline);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Portico Outline';
+  src: url('../../../assets/Portico_Outline.woff') format('woff');
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
 
 * {
   font-family: 'Montserrat', sans-serif;

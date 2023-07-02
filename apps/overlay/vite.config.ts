@@ -6,12 +6,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': {
-        target: 'http://192.168.0.159:5000/',
+        target: 'https://daddevbot-backend.simonporter.co.uk/',
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'http://192.168.0.159:5000/',
+        target: 'https://daddevbot-backend.simonporter.co.uk/',
         changeOrigin: true,
         secure: false,
       },

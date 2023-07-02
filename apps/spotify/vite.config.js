@@ -5,12 +5,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/auth': {
-        target: 'http://localhost:5000/',
+        target: 'https://daddevbot-backend.simonporter.co.uk/',
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'http://localhost:5000/',
+        target: 'https://daddevbot-backend.simonporter.co.uk/',
         changeOrigin: true,
         secure: false,
       },

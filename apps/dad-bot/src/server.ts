@@ -204,8 +204,9 @@ app.get('/api/player/currently-playing', async (req, res) => {
     );
     res.send(resp?.data);
   } catch (err) {
+    console.log({ err });
     if ((err as AxiosError)?.response?.status === 401) {
-      res.redirect('/auth/refresh');
+      res.redirect('/auth/spotify/refresh');
     }
   }
 });
