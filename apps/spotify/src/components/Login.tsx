@@ -1,5 +1,5 @@
 import React from 'react';
-import SpotifyLogo from '../../assets/spotify-icon.png';
+import SpotifyLogo from '../../public/spotify-icon.png';
 
 export function Login() {
   return (

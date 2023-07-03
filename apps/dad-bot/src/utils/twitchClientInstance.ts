@@ -301,7 +301,7 @@ async function connectTwitch({
 }: {
   twitchAccessToken: string;
 }) {
-  if (client.readyState() === 'OPEN') {
+  if (client && client.readyState() === 'OPEN') {
     return;
   }
 
