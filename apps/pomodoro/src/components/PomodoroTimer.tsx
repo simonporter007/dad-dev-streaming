@@ -22,6 +22,7 @@ export function PomodoroTimer() {
       setRound((round) => {
         return onBreak ? round + 1 : round;
       });
+      setOnBreak((onBreak) => !onBreak);
     }
   }, [seconds]);
 
@@ -30,8 +31,7 @@ export function PomodoroTimer() {
       interval = setInterval(() => {
         setSeconds((prev) => {
           if (prev === 0) {
-            setOnBreak((onBreak) => !onBreak);
-            return !onBreak ? defaultFocusTime : defaultBreakTime;
+            return onBreak ? defaultBreakTime : defaultFocusTime 
           }
           return prev - SECOND;
         });
@@ -41,12 +41,12 @@ export function PomodoroTimer() {
     }
 
     return () => clearInterval(interval);
-  }, [timerStarted]);
+  }, [timerStarted, onBreak]);
 
   return (
     <a href='#' onClick={handleTimerClick}>
       {onBreak ? (
-        <div className='grid h-full text-white text-center place-content-center'>
+        <div className='grid h-full w-screen text-white text-center place-content-center'>
           <span className="font-['Bungee'] text-8xl ">
             {timerStarted
               ? new Date(seconds).toISOString().substring(14, 19)
