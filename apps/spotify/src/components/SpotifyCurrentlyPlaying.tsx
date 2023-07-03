@@ -2,7 +2,7 @@ import React from 'react';
 import { useGetCurrentlyPlaying } from '../hooks/useGetCurrentlyPlaying';
 import { useGetToken } from '../hooks/useGetToken';
 import { Login } from './Login';
-import SpotifyLogo from '../../assets/spotify-icon.png';
+import SpotifyLogo from '../../public/spotify-icon.png';
 
 export function SpotifyCurrentlyPlaying() {
   const tokenQuery = useGetToken();
@@ -18,10 +18,12 @@ export function SpotifyCurrentlyPlaying() {
         currentlyPlayingQuery?.data?.is_playing ? 'opacity-100' : 'opacity-0'
       }`}
     >
-      <img
-        className='h-14 w-14 rounded-lg m-auto'
-        src={currentlyPlayingQuery?.data?.item?.album?.images?.[0]?.url}
-      />
+      {currentlyPlayingQuery?.data?.item?.album?.images?.[0]?.url ? (
+        <img
+          className='h-14 w-14 rounded-lg m-auto'
+          src={currentlyPlayingQuery?.data?.item?.album?.images?.[0]?.url}
+        />
+      ) : null}
       <div className='m-auto'>
         <div className='grid'>
           <span className='text-lg text-white'>
