@@ -83,6 +83,8 @@ export function PomodoroTimer() {
     return () => clearInterval(interval);
   }, [timerStarted, onBreak]);
 
+  console.log({ messageHistory });
+
   return (
     <a href='#' onClick={handleTimerClick}>
       {onBreak ? (

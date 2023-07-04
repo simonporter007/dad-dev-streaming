@@ -26,6 +26,12 @@ const supportedCommands = ['pomo', 'lurk', 'music'] as const;
 const pomodoroTimers: Record<string, PomodoroTimerType> = {};
 const messageTimers: Record<string, NodeJS.Timer> = {};
 let client: tmi.Client;
+let wsClient: WebSocket;
+
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+  wsClient = ws;
+});
 
 function sayMessage({ name }: { name: Message['name'] }) {
   if (!name) return;
