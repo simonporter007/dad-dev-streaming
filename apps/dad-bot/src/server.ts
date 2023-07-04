@@ -14,7 +14,7 @@ const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET || 'not-found';
 const twitchClientId = process.env.TWITCH_CLIENT_ID || 'not-found';
 const twitchClientSecret = process.env.TWITCH_CLIENT_SECRET || 'not-found';
 const serverBaseUrl = process.env.BASE_URL || 'http://localhost:5000';
-const serverPort = serverBaseUrl.split(':')[2] || 5100;
+const serverPort = serverBaseUrl.split(':')[2] || 5273;
 const frontendBaseUrl =
   process.env.FRONTEND_BASE_URL || 'http://localhost:5173';
 const tokens = {
