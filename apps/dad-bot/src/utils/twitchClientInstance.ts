@@ -1,5 +1,7 @@
 import tmi from 'tmi.js';
 import dotenv from 'dotenv';
+import { wss } from './wsInstance';
+import type { WebSocket } from 'ws';
 
 dotenv.config();
 
@@ -23,6 +25,12 @@ const supportedCommands = ['pomo', 'lurk', 'music'] as const;
 const pomodoroTimers: Record<string, PomodoroTimerType> = {};
 const messageTimers: Record<string, NodeJS.Timer> = {};
 let client: tmi.Client;
+let wsClient: WebSocket;
+
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+  wsClient = ws;
+});
 
 async function setupTimers() {
   messageTimers['info'] = setInterval(async () => {
@@ -276,6 +284,10 @@ async function onMessageHandler(
         channel,
         `🎶 [@${tags.username}]: Currently streaming Lo-Fi Girl from Spotify. Find out more: https://lofigirl.com/`
       );
+    } else if (command === 'say' && tags.username === channelName) {
+      if (wsClient.readyState === wsClient.OPEN) {
+        wsClient.send(args?.join(' '));
+      }
     }
   } catch (err) {
     console.log(err);

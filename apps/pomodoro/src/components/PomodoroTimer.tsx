@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useSound } from 'use-sound';
+import pingSfx from '../public/ping.mp3';
+import newRoundSfx from '../public/newRound.mp3';
+import { useWebsocketConnection } from '../hooks/useWebsocketConnection';
 
 const SECOND = 1 * 1000;
 const MINUTE = 60 * SECOND;
@@ -11,6 +15,21 @@ export function PomodoroTimer() {
   const [onBreak, setOnBreak] = useState(false);
   const [seconds, setSeconds] = useState(defaultFocusTime);
   const [round, setRound] = useState(1);
+  const [messageHistory, setMessageHistory] = useState<
+    WebSocketEventMap['message'][] | null
+  >([]);
+  const lastMessage = useWebsocketConnection();
+
+  const [playPing] = useSound(pingSfx, {
+    playbackRate: 0.7,
+    volume: 0.3,
+    interrupt: true,
+  });
+  const [playNewRound] = useSound(newRoundSfx, {
+    playbackRate: 0.7,
+    volume: 0.2,
+    interrupt: true,
+  });
   let interval: number;
 
   function handleTimerClick() {
@@ -18,9 +37,22 @@ export function PomodoroTimer() {
   }
 
   useEffect(() => {
+    if (lastMessage !== null) {
+      setMessageHistory((prev) =>
+        prev ? [...prev, lastMessage] : [lastMessage]
+      );
+    }
+  }, [lastMessage, setMessageHistory]);
+
+  useEffect(() => {
     if (seconds === 0) {
       setRound((round) => {
-        return onBreak ? round + 1 : round;
+        if (onBreak) {
+          playNewRound();
+          return round + 1;
+        }
+        playPing();
+        return round;
       });
       setOnBreak((onBreak) => !onBreak);
     }
@@ -31,7 +63,7 @@ export function PomodoroTimer() {
       interval = setInterval(() => {
         setSeconds((prev) => {
           if (prev === 0) {
-            return onBreak ? defaultBreakTime : defaultFocusTime 
+            return onBreak ? defaultBreakTime : defaultFocusTime;
           }
           return prev - SECOND;
         });
@@ -42,6 +74,8 @@ export function PomodoroTimer() {
 
     return () => clearInterval(interval);
   }, [timerStarted, onBreak]);
+
+  console.log({ messageHistory });
 
   return (
     <a href='#' onClick={handleTimerClick}>
