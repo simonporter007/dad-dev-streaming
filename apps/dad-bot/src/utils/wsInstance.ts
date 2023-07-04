@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const wsHost = process.env.BASE_URL || 'localhost';
-const wss = new WebSocketServer({ host: wsHost, port: 5374 });
+const wss = new WebSocketServer({ port: 5373 });
+wss.on('connection', function(ws) {
+    ws.send('connected')
+})
 
 export { wss };

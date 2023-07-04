@@ -83,20 +83,25 @@ app.get('/auth/spotify/refresh', async (req, res) => {
     grant_type: 'refresh_token',
   };
 
-  const resp = await axiosClient.post(
-    'https://accounts.spotify.com/api/token',
-    new URLSearchParams(params),
-    {
-      headers: {
-        Authorization: `Basic ${tokens.authToken}`,
-      },
+  try {
+    const resp = await axiosClient.post(
+      'https://accounts.spotify.com/api/token',
+      new URLSearchParams(params),
+      {
+        headers: {
+          Authorization: `Basic ${tokens.authToken}`,
+        },
+      }
+      );
+      
+      if (resp.status === 200) {
+        tokens.spotifyAccessToken = resp.data.access_token;
+        return res.redirect('/');
+      }
+    } catch (err) {
+      tokens.spotifyRefreshToken = ''
+      return res.redirect('/auth/spotify/login')
     }
-  );
-
-  if (resp.status === 200) {
-    tokens.spotifyAccessToken = resp.data.access_token;
-    res.redirect('/');
-  }
 });
 
 /* TWITCH */
@@ -159,15 +164,20 @@ app.get('/auth/twitch/refresh', async (req, res) => {
     grant_type: 'refresh_token',
   };
 
-  const resp = await axiosClient.post(
-    'https://id.twitch.tv/oauth2/token',
-    new URLSearchParams(params)
-  );
-
-  if (resp.status === 200) {
-    tokens.twitchAccessToken = resp.data.access_token;
-    res.redirect('/auth/twitch/connect');
-  }
+  try{
+    const resp = await axiosClient.post(
+      'https://id.twitch.tv/oauth2/token',
+      new URLSearchParams(params)
+      );
+      
+      if (resp.status === 200) {
+        tokens.twitchAccessToken = resp.data.access_token;
+        res.redirect('/auth/twitch/connect');
+      }
+    } catch (err) {
+      tokens.twitchRefreshToken = ''
+      return res.redirect('/auth/twitch/login')
+    }
 });
 
 app.get('/auth/twitch/connect', async (req, res) => {

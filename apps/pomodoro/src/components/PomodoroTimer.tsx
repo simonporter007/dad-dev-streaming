@@ -15,9 +15,7 @@ export function PomodoroTimer() {
   const [onBreak, setOnBreak] = useState(false);
   const [seconds, setSeconds] = useState(defaultFocusTime);
   const [round, setRound] = useState(1);
-  const [messageHistory, setMessageHistory] = useState<
-    WebSocketEventMap['message'][] | null
-  >([]);
+  const [message, setMessage] = useState<string>();
   const lastMessage = useWebsocketConnection();
 
   const [playPing] = useSound(pingSfx, {
@@ -38,11 +36,21 @@ export function PomodoroTimer() {
 
   useEffect(() => {
     if (lastMessage !== null) {
-      setMessageHistory((prev) =>
-        prev ? [...prev, lastMessage] : [lastMessage]
-      );
+      try {
+        const parsedMessage = JSON.parse(lastMessage.data) as { command: string, message: string }
+        if (parsedMessage?.command === 'pause') {
+          setTimerStarted(false)
+        } else if (parsedMessage?.command === 'resume') {
+          setTimerStarted(true)
+        } else if (parsedMessage?.command === 'say') {
+          setMessage(parsedMessage?.message);
+        }
+      } catch (err) {
+        // not JSON message, ignore
+        return
+      }
     }
-  }, [lastMessage, setMessageHistory]);
+  }, [lastMessage, setMessage, setTimerStarted]);
 
   useEffect(() => {
     if (seconds === 0) {
@@ -75,8 +83,6 @@ export function PomodoroTimer() {
     return () => clearInterval(interval);
   }, [timerStarted, onBreak]);
 
-  console.log({ messageHistory });
-
   return (
     <a href='#' onClick={handleTimerClick}>
       {onBreak ? (
@@ -86,6 +92,7 @@ export function PomodoroTimer() {
               ? new Date(seconds).toISOString().substring(14, 19)
               : 'PAUSED'}
           </span>
+          <span key={message} className="fade-in-out max-w-[800px] font-['Portico_Outline'] text-3xl">{message}</span>
         </div>
       ) : (
         <div className='grid justify-end items-end h-full'>
