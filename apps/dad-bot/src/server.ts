@@ -31,7 +31,7 @@ const app = express();
 
 /* SPOTIFY */
 app.get('/auth/spotify/login', (req, res) => {
-  if (tokens.spotifyRefreshToken) {
+  if (tokens.spotifyRefreshToken && !req?.query?.forceRefresh) {
     return res.redirect(`/auth/spotify/refresh`);
   }
   const scope = 'user-read-currently-playing';
@@ -92,21 +92,21 @@ app.get('/auth/spotify/refresh', async (req, res) => {
           Authorization: `Basic ${tokens.authToken}`,
         },
       }
-      );
-      
-      if (resp.status === 200) {
-        tokens.spotifyAccessToken = resp.data.access_token;
-        return res.redirect('/');
-      }
-    } catch (err) {
-      tokens.spotifyRefreshToken = ''
-      return res.redirect('/auth/spotify/login')
+    );
+
+    if (resp.status === 200) {
+      tokens.spotifyAccessToken = resp.data.access_token;
+      return res.redirect('/');
     }
+  } catch (err) {
+    tokens.spotifyRefreshToken = '';
+    return res.redirect('/auth/spotify/login');
+  }
 });
 
 /* TWITCH */
 app.get('/auth/twitch/login', (req, res) => {
-  if (tokens.twitchRefreshToken) {
+  if (tokens.twitchRefreshToken && !req?.query?.forceRefresh) {
     return res.redirect(`/auth/twitch/refresh`);
   }
   const scope = 'chat:edit chat:read';
@@ -164,20 +164,20 @@ app.get('/auth/twitch/refresh', async (req, res) => {
     grant_type: 'refresh_token',
   };
 
-  try{
+  try {
     const resp = await axiosClient.post(
       'https://id.twitch.tv/oauth2/token',
       new URLSearchParams(params)
-      );
-      
-      if (resp.status === 200) {
-        tokens.twitchAccessToken = resp.data.access_token;
-        res.redirect('/auth/twitch/connect');
-      }
-    } catch (err) {
-      tokens.twitchRefreshToken = ''
-      return res.redirect('/auth/twitch/login')
+    );
+
+    if (resp.status === 200) {
+      tokens.twitchAccessToken = resp.data.access_token;
+      res.redirect('/auth/twitch/connect');
     }
+  } catch (err) {
+    tokens.twitchRefreshToken = '';
+    return res.redirect('/auth/twitch/login');
+  }
 });
 
 app.get('/auth/twitch/connect', async (req, res) => {
