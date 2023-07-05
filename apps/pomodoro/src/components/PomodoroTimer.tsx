@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useSound } from 'use-sound';
+import pingSfx from '../public/ping.mp3';
+import newRoundSfx from '../public/newRound.mp3';
+import { useWebsocketConnection } from '../hooks/useWebsocketConnection';
 
 const SECOND = 1 * 1000;
 const MINUTE = 60 * SECOND;
@@ -11,6 +15,19 @@ export function PomodoroTimer() {
   const [onBreak, setOnBreak] = useState(false);
   const [seconds, setSeconds] = useState(defaultFocusTime);
   const [round, setRound] = useState(1);
+  const [message, setMessage] = useState<string>();
+  const lastMessage = useWebsocketConnection();
+
+  const [playPing] = useSound(pingSfx, {
+    playbackRate: 0.7,
+    volume: 0.3,
+    interrupt: true,
+  });
+  const [playNewRound] = useSound(newRoundSfx, {
+    playbackRate: 0.7,
+    volume: 0.2,
+    interrupt: true,
+  });
   let interval: number;
 
   function handleTimerClick() {
@@ -18,9 +35,32 @@ export function PomodoroTimer() {
   }
 
   useEffect(() => {
+    if (lastMessage !== null) {
+      try {
+        const parsedMessage = JSON.parse(lastMessage.data) as { command: string, message: string }
+        if (parsedMessage?.command === 'pause') {
+          setTimerStarted(false)
+        } else if (parsedMessage?.command === 'resume') {
+          setTimerStarted(true)
+        } else if (parsedMessage?.command === 'say') {
+          setMessage(parsedMessage?.message);
+        }
+      } catch (err) {
+        // not JSON message, ignore
+        return
+      }
+    }
+  }, [lastMessage, setMessage, setTimerStarted]);
+
+  useEffect(() => {
     if (seconds === 0) {
       setRound((round) => {
-        return onBreak ? round + 1 : round;
+        if (onBreak) {
+          playNewRound();
+          return round + 1;
+        }
+        playPing();
+        return round;
       });
       setOnBreak((onBreak) => !onBreak);
     }
@@ -31,7 +71,7 @@ export function PomodoroTimer() {
       interval = setInterval(() => {
         setSeconds((prev) => {
           if (prev === 0) {
-            return onBreak ? defaultBreakTime : defaultFocusTime 
+            return onBreak ? defaultBreakTime : defaultFocusTime;
           }
           return prev - SECOND;
         });
@@ -52,6 +92,7 @@ export function PomodoroTimer() {
               ? new Date(seconds).toISOString().substring(14, 19)
               : 'PAUSED'}
           </span>
+          <span key={message} className="fade-in-out max-w-[800px] font-['Portico_Outline'] text-3xl">{message}</span>
         </div>
       ) : (
         <div className='grid justify-end items-end h-full'>

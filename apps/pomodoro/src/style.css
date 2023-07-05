@@ -1,10 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300,400;700&display=swap');
-@import url(//db.onlinewebfonts.com/c/6f0cd4643b13ab5889b7d772ca093555?family=Portico+Outline);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Portico Outline';
+  src: url('../../../assets/Portico_Outline.woff') format('woff');
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
 
 * {
   font-family: 'Montserrat', sans-serif;
@@ -20,4 +27,35 @@
     rgba(67, 67, 67, 0.6) 0%,
     rgba(17, 17, 17, 0.8005249343832022) 80%
   );
+}
+
+@-webkit-keyframes fade-in-top {
+  0, 20%, 80%, 100%  {
+    -webkit-transform: translateY(-50px);
+            transform: translateY(-50px);
+    opacity: 0;
+  }
+  21%, 79% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fade-in-top {
+  0, 20%, 80%, 100% {
+    -webkit-transform: translateY(-50px);
+            transform: translateY(-50px);
+    opacity: 0;
+  }
+  21%, 79% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fade-in-out {
+  opacity:0;
+  -webkit-animation: fade-in-top 10s ease-in-out both;
+  animation: fade-in-top 10s ease-in-out both
 }

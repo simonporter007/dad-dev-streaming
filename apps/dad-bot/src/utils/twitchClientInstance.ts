@@ -1,5 +1,6 @@
 import tmi from 'tmi.js';
 import dotenv from 'dotenv';
+import { wss } from './wsInstance';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ type PomodoroTimerType = {
 
 const SECOND = 1 * 1000;
 const MINUTE = 60 * SECOND;
+const HOUR = 60 * MINUTE;
 const channelName = process.env.TWITCH_CHANNEL_NAME || '';
 const userName = process.env.TWITCH_BOT_USERNAME || '';
 const supportedCommands = ['pomo', 'lurk', 'music'] as const;
@@ -29,25 +31,22 @@ async function setupTimers() {
       channelName,
       `🤖 : This is a coworking and studying stream and a safe place! I hope you'll enjoy the vibes and work along with us. This stream is still a work in progress. See something missing? Let me know! 💜`
     );
-  }, 55 * MINUTE);
+  }, 2 * HOUR);
   messageTimers['hello'] = setInterval(async () => {
     await client.say(
       channelName,
       `🤖 : Hey there! Enjoying the vibes, or prefer something else? What are you working on today? Don't be shy, say hello! 🐼`
     );
-  }, 70 * MINUTE);
+  }, 90 * MINUTE);
   messageTimers['lurk'] = setInterval(async () => {
     await client.say(
       channelName,
       `🤖 : Lurkers are always welcome too 👀, let us know with a !lurk`
     );
-  }, 95 * MINUTE);
+  }, 3 * HOUR);
   messageTimers['hydrate'] = setInterval(async () => {
-    await client.say(
-      channelName,
-      `🤖 : Don't forget to hydrate! 💧 Keep that brain topped up to its full potential.`
-    );
-  }, 60 * MINUTE);
+    await client.say(channelName, `🤖 : 💧 Time to hydrate! 💧`);
+  }, 1 * HOUR);
 }
 
 async function onMessageHandler(
@@ -63,7 +62,8 @@ async function onMessageHandler(
     const command = args?.shift()?.toLowerCase();
     const subCommand = args?.shift()?.toLowerCase();
     const username = tags?.username;
-    //console.log({ args, command, subCommand, self, tags });
+    // console.log({ args, channelName, command, subCommand, self, tags });
+    if (!command) return
 
     if (command === 'commands' || command === 'help') {
       /* !commands or !help */
@@ -278,6 +278,12 @@ async function onMessageHandler(
         channel,
         `🎶 [@${tags.username}]: Currently streaming Lo-Fi Girl from Spotify. Find out more: https://lofigirl.com/`
       );
+    } else if (['say', 'pause', 'resume'].includes(command) && tags.username === channelName) {
+      wss.clients.forEach((client) => {
+        if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify({command: command, message: `${subCommand}${args?.length? ` ${args?.join(' ')}` : ''}`}));
+        }
+      });
     }
   } catch (err) {
     console.log(err);
