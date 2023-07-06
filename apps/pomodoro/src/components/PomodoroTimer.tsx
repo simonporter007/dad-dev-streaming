@@ -12,8 +12,8 @@ const defaultBreakTime = 10 * MINUTE;
 
 export function PomodoroTimer() {
   const [timerStarted, setTimerStarted] = useState(false);
-  const [onBreak, setOnBreak] = useState(false);
-  const [seconds, setSeconds] = useState(defaultFocusTime);
+  const [onBreak, setOnBreak] = useState(true);
+  const [seconds, setSeconds] = useState(defaultBreakTime);
   const [round, setRound] = useState(1);
   const [message, setMessage] = useState<string>();
   const lastMessage = useWebsocketConnection();
