@@ -9,8 +9,9 @@
   "scripts": {
     "start": "turbo run start",
     "start:spotify": "concurrently \"pnpm run --filter dad-bot start\" \"pnpm run --filter spotify start\"",
-    "start:overlay": "concurrently \"pnpm run --filter dad-bot start\" \"pnpm run --filter overlay start\"",
-    "start:service": "forever start -c \"pnpm start:overlay\" ./",
+    "start:overlay": "concurrently \"pnpm run --filter dad-bot start\" \"pnpm run --filter overlay start\" \"drizzle-kit studio --host daddevbot-db.simonporter.co.uk --port 5473 --config ./apps/dad-bot/drizzle.config.ts\"",
+    "start:service": "pm2 start ./config/pm2.json",
+    "stop:service": "pm2 stop ./config/pm2.json",
     "build": "turbo run build",
     "lint": "turbo run lint"
   },
@@ -19,6 +20,7 @@
     "@typescript-eslint/parser": "^5.60.0",
     "autoprefixer": "^10.4.14",
     "concurrently": "^8.2.0",
+    "drizzle-kit": "^0.19.3",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",

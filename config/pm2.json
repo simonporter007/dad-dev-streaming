@@ -1,0 +1,22 @@
+{
+    "apps": [
+        {
+            "name": "dad-bot",
+            "cwd": "./apps/dad-bot",
+            "script": "pnpm",
+            "args": "run start"
+        },
+        {
+            "name": "overlay",
+            "cwd": "./apps/overlay",
+            "script": "pnpm",
+            "args": "run start"
+        },
+        {
+            "name": "dad-bot/drizzle-kit-studio",
+            "cwd": "./apps/dad-bot",
+            "script": "pnpm",
+            "args": "run start:studio"
+        }
+    ]
+}

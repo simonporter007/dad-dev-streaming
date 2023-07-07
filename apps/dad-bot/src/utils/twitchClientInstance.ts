@@ -1,6 +1,8 @@
 import tmi from 'tmi.js';
 import dotenv from 'dotenv';
 import { wss } from './wsInstance';
+import { getAllMessages, getMessageByName } from './dbinstance';
+import { Message } from '../db/schema';
 
 dotenv.config();
 
@@ -25,28 +27,27 @@ const pomodoroTimers: Record<string, PomodoroTimerType> = {};
 const messageTimers: Record<string, NodeJS.Timer> = {};
 let client: tmi.Client;
 
+function sayMessage({name}: {name: Message['name']}) {
+  if (!name) return
+
+  const messageSettings = getMessageByName(name)
+  if (!messageSettings.message) return
+
+  const { message: msg, interval } = messageSettings
+  setTimeout(async () => {
+        await client.say(
+          channelName,
+          msg
+        );
+        sayMessage({name})
+      }, interval || 2 * HOUR)
+}
+
 async function setupTimers() {
-  messageTimers['info'] = setInterval(async () => {
-    await client.say(
-      channelName,
-      `🤖 : This is a coworking and studying stream and a safe place! I hope you'll enjoy the vibes and work along with us. This stream is still a work in progress. See something missing? Let me know! 💜`
-    );
-  }, 2 * HOUR);
-  messageTimers['hello'] = setInterval(async () => {
-    await client.say(
-      channelName,
-      `🤖 : Hey there! Enjoying the vibes, or prefer something else? What are you working on today? Don't be shy, say hello! 🐼`
-    );
-  }, 90 * MINUTE);
-  messageTimers['lurk'] = setInterval(async () => {
-    await client.say(
-      channelName,
-      `🤖 : Lurkers are always welcome too 👀, let us know with a !lurk`
-    );
-  }, 3 * HOUR);
-  messageTimers['hydrate'] = setInterval(async () => {
-    await client.say(channelName, `🤖 : 💧 Time to hydrate! 💧`);
-  }, 1 * HOUR);
+  const messages = getAllMessages()
+  messages?.forEach((message) => {
+    sayMessage({name: message?.name})
+  })
 }
 
 async function onMessageHandler(
