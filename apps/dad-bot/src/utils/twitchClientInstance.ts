@@ -27,27 +27,25 @@ const pomodoroTimers: Record<string, PomodoroTimerType> = {};
 const messageTimers: Record<string, NodeJS.Timer> = {};
 let client: tmi.Client;
 
-function sayMessage({name}: {name: Message['name']}) {
-  if (!name) return
+function sayMessage({ name }: { name: Message['name'] }) {
+  if (!name) return;
 
-  const messageSettings = getMessageByName(name)
-  if (!messageSettings.message) return
+  const messageSettings = getMessageByName(name);
+  if (!messageSettings.message) return;
 
-  const { message: msg, interval } = messageSettings
+  const { message: msg, interval } = messageSettings;
+  console.log({ name, msg, interval });
   setTimeout(async () => {
-        await client.say(
-          channelName,
-          msg
-        );
-        sayMessage({name})
-      }, interval || 2 * HOUR)
+    await client.say(channelName, msg);
+    sayMessage({ name });
+  }, interval || 2 * HOUR);
 }
 
 async function setupTimers() {
-  const messages = getAllMessages()
+  const messages = getAllMessages();
   messages?.forEach((message) => {
-    sayMessage({name: message?.name})
-  })
+    sayMessage({ name: message?.name });
+  });
 }
 
 async function onMessageHandler(
@@ -64,7 +62,7 @@ async function onMessageHandler(
     const subCommand = args?.shift()?.toLowerCase();
     const username = tags?.username;
     // console.log({ args, channelName, command, subCommand, self, tags });
-    if (!command) return
+    if (!command) return;
 
     if (command === 'commands' || command === 'help') {
       /* !commands or !help */
@@ -279,10 +277,20 @@ async function onMessageHandler(
         channel,
         `🎶 [@${tags.username}]: Currently streaming Lo-Fi Girl from Spotify. Find out more: https://lofigirl.com/`
       );
-    } else if (['say', 'pause', 'resume'].includes(command) && tags.username === channelName) {
+    } else if (
+      ['say', 'pause', 'resume'].includes(command) &&
+      tags.username === channelName
+    ) {
       wss.clients.forEach((client) => {
         if (client.readyState === client.OPEN) {
-            client.send(JSON.stringify({command: command, message: `${subCommand}${args?.length? ` ${args?.join(' ')}` : ''}`}));
+          client.send(
+            JSON.stringify({
+              command: command,
+              message: `${subCommand}${
+                args?.length ? ` ${args?.join(' ')}` : ''
+              }`,
+            })
+          );
         }
       });
     }
