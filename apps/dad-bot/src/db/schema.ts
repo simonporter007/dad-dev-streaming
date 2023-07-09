@@ -12,6 +12,7 @@ export const messages = sqliteTable('messages', {
   name: text('name'),
   message: text('message'),
   interval: integer('interval'),
+  enabled: integer('enabled', { mode: "boolean"})
 })
 
 export type Setting = InferModel<typeof settings>

@@ -4,7 +4,7 @@ dotenv.config();
  
 export default {
   schema: "./src/db/*",
-  out: "./drizzle",
+  out: "./migrations",
   breakpoints: false,
   driver: 'better-sqlite',
   dbCredentials: {

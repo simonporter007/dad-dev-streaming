@@ -33,10 +33,11 @@ function sayMessage({ name }: { name: Message['name'] }) {
   const messageSettings = getMessageByName(name);
   if (!messageSettings.message) return;
 
-  const { message: msg, interval } = messageSettings;
-  console.log({ name, msg, interval });
+  const { message: msg, interval, enabled } = messageSettings;
   setTimeout(async () => {
-    await client.say(channelName, msg);
+    if (enabled) {
+      await client.say(channelName, msg);
+    }
     sayMessage({ name });
   }, interval || 2 * HOUR);
 }

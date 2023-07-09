@@ -15,6 +15,13 @@
       "when": 1688683099196,
       "tag": "0001_awesome_franklin_storm",
       "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1688915118631,
+      "tag": "0002_nostalgic_ken_ellis",
+      "breakpoints": false
     }
   ]
 }

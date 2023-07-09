@@ -6,7 +6,8 @@
     "start:studio": "drizzle-kit studio --host daddevbot-db.simonporter.co.uk --port 5473 --config ./drizzle.config.ts",
     "build:types": "tsc",
     "format": "prettier --write .",
-    "lint": "eslint src --ext js,ts,tsx"
+    "lint": "eslint src --ext js,ts,tsx",
+    "generate": "drizzle-kit generate:sqlite"
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
