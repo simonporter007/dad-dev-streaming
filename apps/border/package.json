@@ -1,0 +1,28 @@
+{
+  "name": "@dad-dev/border",
+  "type": "module",
+  "scripts": {
+    "start": "pnpm vite dev --host",
+    "serve": "pnpm run preview",
+    "build": "vite build",
+    "build:types": "tsc",
+    "format": "prettier --write .",
+    "lint": "eslint src --ext .js,.ts,.tsx"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@vitejs/plugin-react": "^4.0.1",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "postcss-nesting": "^12.0.0",
+    "prettier": "^2.8.8",
+    "tailwindcss": "^3.3.2",
+    "tsx": "^3.12.7",
+    "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
