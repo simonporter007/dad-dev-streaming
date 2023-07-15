@@ -22,6 +22,27 @@
       "when": 1688915118631,
       "tag": "0002_nostalgic_ken_ellis",
       "breakpoints": false
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1689459527790,
+      "tag": "0003_rich_toro",
+      "breakpoints": false
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1689460911960,
+      "tag": "0004_regular_ultimatum",
+      "breakpoints": false
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1689461802332,
+      "tag": "0005_productive_captain_universe",
+      "breakpoints": false
     }
   ]
 }

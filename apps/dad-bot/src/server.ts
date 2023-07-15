@@ -4,7 +4,12 @@ import { v4 } from 'uuid';
 import { axiosClient } from './utils/axiosInstance';
 import { AxiosError } from 'axios';
 import { connectTwitch } from './utils/twitchClientInstance';
-import { deleteSetting, getAllSettings, getSettingByName, insertSetting } from './utils/dbinstance';
+import {
+  deleteSetting,
+  getAllSettings,
+  getSettingByName,
+  insertSetting,
+} from './utils/dbinstance';
 
 dotenv.config();
 
@@ -19,10 +24,16 @@ const serverPort = serverBaseUrl.split(':')[2] || 5273;
 const frontendBaseUrl =
   process.env.FRONTEND_BASE_URL || 'http://localhost:5173';
 const tokens = {
-  spotifyAccessToken: getSettingByName('twitchRefreshToken') || '',
-  spotifyRefreshToken: getSettingByName('spotifyRefreshToken') || process.env.SPOTIFY_REFRESH_TOKEN || '',
-  twitchAccessToken: getSettingByName('twitchRefreshToken') || '',
-  twitchRefreshToken: getSettingByName('twitchRefreshToken') || process.env.TWITCH_REFRESH_TOKEN || '',
+  spotifyAccessToken: getSettingByName('spotifyAccessToken') || '',
+  spotifyRefreshToken:
+    getSettingByName('spotifyRefreshToken') ||
+    process.env.SPOTIFY_REFRESH_TOKEN ||
+    '',
+  twitchAccessToken: getSettingByName('twitchAccessToken') || '',
+  twitchRefreshToken:
+    getSettingByName('twitchRefreshToken') ||
+    process.env.TWITCH_REFRESH_TOKEN ||
+    '',
   authToken: Buffer.from(`${spotifyClientId}:${spotifyClientSecret}`).toString(
     'base64'
   ),
@@ -74,8 +85,14 @@ app.get('/auth/spotify/callback', async (req, res) => {
   if (resp.status === 200) {
     tokens.spotifyAccessToken = resp.data.access_token;
     tokens.spotifyRefreshToken = resp.data.refresh_token;
-    insertSetting({ name: 'spotifyAccessToken', value: resp.data.access_token})
-    insertSetting({ name: 'spotifyRefreshToken', value: resp.data.refresh_token})
+    insertSetting({
+      name: 'spotifyAccessToken',
+      value: resp.data.access_token,
+    });
+    insertSetting({
+      name: 'spotifyRefreshToken',
+      value: resp.data.refresh_token,
+    });
     res.redirect(frontendBaseUrl);
   }
 });
@@ -99,12 +116,15 @@ app.get('/auth/spotify/refresh', async (req, res) => {
 
     if (resp.status === 200) {
       tokens.spotifyAccessToken = resp.data.access_token;
-      insertSetting({ name: 'spotifyAccessToken', value: resp.data.access_token})
+      insertSetting({
+        name: 'spotifyAccessToken',
+        value: resp.data.access_token,
+      });
       return res.redirect('/');
     }
   } catch (err) {
     tokens.spotifyRefreshToken = '';
-    deleteSetting('spotifyRefreshToken')
+    deleteSetting('spotifyRefreshToken');
     return res.redirect('/auth/spotify/login');
   }
 });
@@ -157,8 +177,11 @@ app.get('/auth/twitch/callback', async (req, res) => {
   if (resp.status === 200) {
     tokens.twitchAccessToken = resp.data.access_token;
     tokens.twitchRefreshToken = resp.data.refresh_token;
-    insertSetting({ name: 'twitchAccessToken', value: resp.data.access_token})
-    insertSetting({ name: 'twitchRefreshToken', value: resp.data.refresh_token})
+    insertSetting({ name: 'twitchAccessToken', value: resp.data.access_token });
+    insertSetting({
+      name: 'twitchRefreshToken',
+      value: resp.data.refresh_token,
+    });
     res.redirect(frontendBaseUrl);
   }
 });
@@ -179,12 +202,15 @@ app.get('/auth/twitch/refresh', async (req, res) => {
 
     if (resp.status === 200) {
       tokens.twitchAccessToken = resp.data.access_token;
-      insertSetting({ name: 'twitchAccessToken', value: resp.data.access_token})
+      insertSetting({
+        name: 'twitchAccessToken',
+        value: resp.data.access_token,
+      });
       res.redirect('/auth/twitch/connect');
     }
   } catch (err) {
     tokens.twitchRefreshToken = '';
-    deleteSetting('twitchRefreshToken')
+    deleteSetting('twitchRefreshToken');
     return res.redirect('/auth/twitch/login');
   }
 });
@@ -228,6 +254,33 @@ app.get('/api/player/currently-playing', async (req, res) => {
   }
 });
 
-app.listen(serverPort, () => {
+app.listen(serverPort, async () => {
   console.log(`Listening at ${serverBaseUrl}`);
+  const params = {
+    client_id: twitchClientId,
+    client_secret: twitchClientSecret,
+    refresh_token: tokens.twitchRefreshToken,
+    grant_type: 'refresh_token',
+  };
+
+  try {
+    const resp = await axiosClient.post(
+      'https://id.twitch.tv/oauth2/token',
+      new URLSearchParams(params)
+    );
+    if (resp.status === 200) {
+      tokens.twitchAccessToken = resp.data.access_token;
+      insertSetting({
+        name: 'twitchAccessToken',
+        value: resp.data.access_token,
+      });
+      const status = await connectTwitch({
+        twitchAccessToken: tokens.twitchAccessToken,
+      });
+      console.log({ status });
+    }
+  } catch (err) {
+    console.log('Failed to login to twitch!');
+    console.log(err);
+  }
 });
