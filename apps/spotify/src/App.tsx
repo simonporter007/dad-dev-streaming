@@ -3,7 +3,7 @@ import { SpotifyCurrentlyPlaying } from './components/SpotifyCurrentlyPlaying';
 
 function App() {
   return (
-    <div className='bg-transparent flex justify-end h-fit pr-2'>
+    <div className='bg-transparent h-fit pr-2'>
       <SpotifyCurrentlyPlaying />
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { useGetCurrentlyPlaying } from '../hooks/useGetCurrentlyPlaying';
 import { useGetToken } from '../hooks/useGetToken';
 import { Login } from './Login';
-import SpotifyLogo from '../../public/spotify-icon.png';
+import SpotifyLogo from '../spotify-icon.png';
 
 export function SpotifyCurrentlyPlaying() {
   const tokenQuery = useGetToken();
@@ -37,7 +37,7 @@ export function SpotifyCurrentlyPlaying() {
           </span>
         </div>
       </div>
-      <div className='self-start h-full pl-4 -translate-y-2 translate-x-2'>
+      <div className='flex justify-end min-w-[50px] pl-4 -translate-y-2 translate-x-2'>
         <img src={SpotifyLogo} alt='Spotify Logo' className='h-5 w-5' />
       </div>
     </div>
