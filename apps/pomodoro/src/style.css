@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 
 @tailwind base;
@@ -13,8 +13,16 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Portico Regular';
+  src: url('../../../assets/Portico_Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+}
+
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: #ffffff;
   overflow: hidden;
   margin: 0;
@@ -30,32 +38,44 @@
 }
 
 @-webkit-keyframes fade-in-top {
-  0, 20%, 80%, 100%  {
+  0,
+  20%,
+  80%,
+  100% {
     -webkit-transform: translateY(-50px);
-            transform: translateY(-50px);
+    transform: translateY(-50px);
     opacity: 0;
   }
-  21%, 79% {
+  21%,
+  79% {
     -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 @keyframes fade-in-top {
-  0, 20%, 80%, 100% {
+  0,
+  20%,
+  80%,
+  100% {
     -webkit-transform: translateY(-50px);
-            transform: translateY(-50px);
+    transform: translateY(-50px);
     opacity: 0;
   }
-  21%, 79% {
+  21%,
+  79% {
     -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
 .fade-in-out {
-  opacity:0;
+  opacity: 0;
   -webkit-animation: fade-in-top 10s ease-in-out both;
-  animation: fade-in-top 10s ease-in-out both
+  animation: fade-in-top 10s ease-in-out both;
+}
+
+.heading-frame {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }

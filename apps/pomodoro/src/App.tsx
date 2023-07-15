@@ -3,7 +3,7 @@ import { PomodoroTimer } from './components/PomodoroTimer';
 
 function App() {
   return (
-    <div className='bg-black flex justify-end h-fit pr-2'>
+    <div className='bg-transparent grid justify-end h-fit pr-2'>
       <PomodoroTimer />
     </div>
   );
