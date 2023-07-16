@@ -91,28 +91,6 @@ export function PomodoroTimer() {
     return () => clearInterval(interval);
   }, [timerStarted, onBreak]);
 
-  /*
-  box-shadow: 0 3px 6px rgba(0,0,0,0.4);
-	&:before,
-	&:after {
-		content: "";
-		border: 1px solid white;
-	}
-	&:before {
-		grid-row: 1 / 5;
-    grid-column: 1 / 3;
-		border-right: none;
-		border-bottom: none;
-		border-radius: 16px 0px;
-	}	
-	&:after {
-		grid-row: 1 / span 5;
-    grid-column: 2 / span 2;
-		border-left: none;
-		border-radius: 0px 16px 16px 0px;
-	}
-}
-  */
   return (
     <>
       <a href='#' onClick={handleTimerClick}>
