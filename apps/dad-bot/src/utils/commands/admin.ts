@@ -14,7 +14,7 @@ export async function adminCommands({
   username: string;
 }) {
   if (
-    ['say', 'pause', 'resume'].includes(command) &&
+    ['say', 'pause', 'resume', 'effect'].includes(command) &&
     username === channelName
   ) {
     wss.clients.forEach((client) => {

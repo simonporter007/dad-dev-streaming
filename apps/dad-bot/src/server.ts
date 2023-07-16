@@ -6,14 +6,19 @@ import { AxiosError } from 'axios';
 import { connectTwitch } from './utils/twitchClientInstance';
 import {
   deleteSetting,
-  getAllSettings,
+  getAllTasks,
   getSettingByName,
   insertSetting,
 } from './utils/dbinstance';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
 export type SpotifyTokensType = typeof tokens;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID || 'not-found';
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET || 'not-found';
@@ -253,6 +258,17 @@ app.get('/api/player/currently-playing', async (req, res) => {
     }
   }
 });
+
+app.get('/api/tasks', async (req, res) => {
+  try {
+    const resp = getAllTasks();
+    res.json(resp);
+  } catch (err) {
+    console.log({ err });
+  }
+});
+
+app.use('/apps', express.static(path.join(__dirname, '../..')));
 
 app.listen(serverPort, async () => {
   console.log(`Listening at ${serverBaseUrl}`);
