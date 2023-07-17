@@ -29,7 +29,7 @@ export function TaskList() {
 
   useEffect(() => {
     if (!isFetching) {
-      if (tasks?.length > 10) {
+      if (scope.current.scrollHeight > containerHeight) {
         animateList().play();
       }
     }
