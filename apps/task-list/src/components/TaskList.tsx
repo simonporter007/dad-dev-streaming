@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useGetAllTasks } from '../hooks/useGetAllTasks';
 import { useAnimate } from 'framer-motion';
 
@@ -6,7 +6,16 @@ const containerHeight = 570 - 16; //height of overlay + padding top + bottom
 
 export function TaskList() {
   const [scope, animate] = useAnimate();
-  const { data: tasks = [], isFetching } = useGetAllTasks();
+  const { data: allTasks = [], isFetching } = useGetAllTasks();
+
+  const tDate = new Date();
+  tDate.setHours(0, 0, 0, 0);
+
+  const tasks = useMemo(
+    () => allTasks?.filter((task) => task.date && new Date(task.date) > tDate),
+    [allTasks]
+  );
+
   const animateList = useCallback(
     () =>
       animate(
@@ -56,13 +65,24 @@ export function TaskList() {
             className='grid grid-cols-[28px_150px_1fr] gap-2 pt-4 text-2xl'
           >
             <span className=''>{task?.completed ? '✅' : ''}</span>
-            <span
-              className={`${
-                task?.completed ? 'line-through text-gray-400' : ''
-              }`}
-            >
-              {task?.username}
-            </span>
+            <div className='flex flex-col justify-center'>
+              <span
+                className={`${
+                  task?.completed ? 'line-through text-gray-400' : 'text-xl'
+                }`}
+              >
+                {task?.username}
+              </span>
+              <span
+                className={`${
+                  task?.completed
+                    ? 'line-through text-gray-400'
+                    : 'text-gray-300   text-lg'
+                }`}
+              >
+                {task?.id}
+              </span>
+            </div>
             <span
               className={`${
                 task?.completed ? 'line-through  text-gray-400' : ''

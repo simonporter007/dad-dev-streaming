@@ -33,7 +33,7 @@ export async function taskCommand({
     tDate.setHours(0, 0, 0, 0);
     const userTasks = getTasksByUser(username);
     const userTasksToday = userTasks?.filter(
-      (task) => task.date && task.date > tDate
+      (task) => task.date && new Date(task.date) > tDate
     );
     /* !task */
     if (!subCommand || subCommand === 'help') {
